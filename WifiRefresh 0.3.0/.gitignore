@@ -1,0 +1,32 @@
+# Telemetry and logs
+Telemetry/
+*.log
+wifi-log.txt
+wifi-toast-error.txt
+
+# Build artifacts (C# helper)
+publish/
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# Visual Studio / IDE
+.vs/
+.vscode/
+*.sln.DotSettings
+*.user
+.idea/
+
+# AutoHotkey
+*.compiled
+*.ahk.bak
+
+# Windows
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Shortcuts
+*.lnk
