@@ -2,60 +2,42 @@
 
 All notable changes to WiFi Refresh Utility are documented here.
 
+## [1.0.0] - 2026-07-06
+
+### Added
+- A portable AutoHotkey-based tray launcher with a dedicated refresh action and a DNS-only action
+- A separate [scripts/flush-dns.ps1](scripts/flush-dns.ps1) workflow for clearing the DNS cache without reconnecting Wi-Fi
+- A notification toggle that can be changed from the tray menu or persisted in [scripts/notification-enabled.ini](scripts/notification-enabled.ini)
+- Automatic telemetry logging to [scripts/Telemetry](scripts/Telemetry) for actions and failures
+- A prebuilt [togglewifi.exe](togglewifi.exe) launcher alongside the script source
+
+### Changed
+- The PowerShell backend now uses BurntToast for notifications and attempts to install it automatically on first run
+- The launcher now exposes direct menu actions for viewing logs and opening the telemetry folder
+- The repository documentation was updated to reflect the current tray workflow and file layout
+
+### Fixed
+- Notification issues are now recorded in the error log instead of failing silently
+- The scripts create the telemetry folder automatically before writing logs
+
 ## [0.3.0] - 2026-06-30
 
 ### Changed
-- **MAJOR: Replaced C# toast helper with BurntToast module**
-  - Eliminates complex COM interop code and `WScript.Shell` AUMID registration bug
-  - BurntToast handles AUMID registration internally (properly uses `IPropertyStore`)
-  - Reduces maintenance burden and external dependencies
-  - Notification system now more reliable across Windows versions
-
-### Removed
-- `Build-ToastHelper()` PowerShell function (no longer needed)
-- `$toastHelperProject`, `$toastHelperExe`, `$publishFolder` variables
-- Dependency on compiled C# helper executable
-- Manual Start Menu shortcut creation logic (BurntToast handles it)
+- Replaced the legacy C# toast helper with the BurntToast module
+- Removed the previous dependency on a compiled helper executable for notifications
 
 ### Fixed
-- Toast notifications silently failing due to improper AUMID registration
-- No longer requires dotnet CLI to build/deploy
-- Removed the "succeeds with exit code 0 but shows no notification" failure mode
-
-### Notes
-- Legacy `ToastNotificationHelper.csproj` and `toastnotificationhelper.cs` kept for reference only
-- BurntToast module auto-installs on first run (requires internet for NuGet download)
-- Tested on Windows 10 build 19045
+- Resolved the broken toast-notification flow that previously failed to surface banners reliably
 
 ## [0.2.5] - 2026-06-29
 
-### Features
-- C# toast helper with manual AUMID registration via `WScript.Shell`
-- PowerShell backend with DNS/ARP flushing
-- AutoHotkey tray menu launcher
-- Notification toggle via ini config
+### Added
+- Initial AutoHotkey tray launcher
+- PowerShell backend for DNS and ARP cleanup plus Wi-Fi reconnect
+- Notification toggle via INI configuration
 
-### Known Issues
-- ⚠️ AUMID registration silently fails (`WScript.Shell` doesn't expose `AppUserModelID` property)
-- Toast notifications appear in notification settings but don't display as banners
-- Requires `dotnet` CLI for building the C# helper on first run
-
----
-
-## Migration Guide (0.2.5 → 0.3.0)
-
-### For Users
-
-1. Update `wifi-refresh.ps1` from this repo
-2. No other changes needed — just drop it in place
-3. Delete `publish/` folder if you want to clean up (no longer used)
-4. First run will auto-install BurntToast module (one-time)
-
-### For Developers
-
-- Remove any custom `Build-ToastHelper` calls
-- Stop referencing `$toastHelperExe` or the compiled helper
-- BurntToast is now the single source of truth for notifications
-- To customize notification appearance, edit BurntToast parameters in `Show-Notification`
+### Known issues
+- Toast notifications could fail silently due to the earlier helper approach
+- The workflow required a compiled helper for notifications on first run
 
 ---

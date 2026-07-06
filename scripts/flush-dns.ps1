@@ -1,8 +1,7 @@
-# --- WiFi Refresh Script v0.3.0 ---
-# Flushes DNS/ARP, reconnects Wi-Fi, shows toast notification via BurntToast, logs action
+# --- DNS Flush Script v0.1.0 ---
+# Clears the DNS cache, shows a toast notification when enabled, and logs the action
 param()
 
-# Paths relative to script folder
 $scriptRoot         = Split-Path -Parent $MyInvocation.MyCommand.Path
 $telemetryFolder    = Join-Path $scriptRoot "Telemetry"
 $logFile            = Join-Path $telemetryFolder "wifi-log.txt"
@@ -28,12 +27,9 @@ if (!(Test-Path $telemetryFolder)) {
     New-Item -ItemType Directory -Path $telemetryFolder -Force | Out-Null
 }
 
-# Debug: Log script start
-Add-Content -Path $logFile -Value "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] --- Script Started ---"
+Add-Content -Path $logFile -Value "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] --- DNS Flush Script Started ---"
 
-# Notification function: Try BurntToast module, fallback to MessageBox (guaranteed to work)
 function Install-BurntToastIfNeeded {
-    # Already loaded or installed?
     if (Get-Module -ListAvailable -Name BurntToast) {
         return $true
     }
@@ -44,7 +40,6 @@ function Install-BurntToastIfNeeded {
         }
         Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -ErrorAction SilentlyContinue
 
-        # CurrentUser scope avoids needing admin rights
         Install-Module -Name BurntToast -Scope CurrentUser -Force -AllowClobber -ErrorAction Stop
         Add-Content -Path $logFile -Value "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] BurntToast module installed"
         return $true
@@ -67,7 +62,6 @@ function Show-Notification {
         return
     }
 
-    # BurntToast
     if (Install-BurntToastIfNeeded) {
         try {
             Import-Module BurntToast -Force -ErrorAction Stop
@@ -91,39 +85,12 @@ function Show-Notification {
 }
 
 try {
-    # Detect SSID
-    $ssidLine = netsh wlan show interfaces | Select-String "^\s*SSID\s*:"
-    $ssid = ""
-    if ($ssidLine) {
-        $ssid = ($ssidLine -replace "^\s*SSID\s*:\s*", "").Trim()
-    }
-    if ([string]::IsNullOrWhiteSpace($ssid)) {
-        $ssid = "SSID unavailable"
-    }
-
-    # Flush DNS
     Clear-DnsClientCache
-
-    # Clear ARP
-    netsh interface ip delete arpcache | Out-Null
-
-    # Disconnect Wi-Fi
-    netsh wlan disconnect | Out-Null
-    Start-Sleep -Seconds 2
-
-    # Reconnect Wi-Fi
-    netsh wlan connect name="$ssid" | Out-Null
-    Start-Sleep -Seconds 1
-
-    # Show notification
-    Show-Notification -Title "Wi-Fi Refreshed" -Message "Connected to $ssid at $time" -IconPath $wifiIcon
-
-    # Timestamp
     $time = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 
-    # Log success
-    Add-Content -Path $logFile -Value "[$time] Wi-Fi cache cleared and reconnected to SSID: $ssid"
+    Show-Notification -Title "DNS Cache Cleared" -Message "The DNS cache was cleared successfully." -IconPath $wifiIcon
 
+    Add-Content -Path $logFile -Value "[$time] DNS cache cleared successfully"
 }
 catch {
     $err = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] ERROR: $($_.Exception.Message)"

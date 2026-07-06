@@ -34,7 +34,6 @@ Menu, Tray, Add, Flush DNS Only, FlushDNS
 Menu, Tray, Add, View Logs, ViewLogs
 Menu, Tray, Add, Open Telemetry Folder, OpenTelemetry
 Menu, Tray, Add, Notifications, ToggleNotifications
-Menu, Tray, Add, Build Notification Helper, BuildHelper
 Menu, Tray, Add
 Menu, Tray, Add, Exit, ExitApp
 
@@ -55,10 +54,6 @@ RefreshWiFi:
     Run, PowerShell -NoProfile -ExecutionPolicy Bypass -File "%A_ScriptDir%\Scripts\wifi-refresh.ps1",, Hide
 return
 
-BuildHelper:
-    Run, PowerShell -NoProfile -ExecutionPolicy Bypass -Command "Set-Location -Path '%A_ScriptDir%\Scripts'; dotnet publish ToastNotificationHelper.csproj -c Release -o publish",, Hide
-return
-
 ToggleNotifications:
     IniRead, currentState, %notificationIniFile%, Settings, Enabled, 1
     if (currentState = "1")
@@ -77,7 +72,7 @@ ToggleNotifications:
 return
 
 FlushDNS:
-    Run, PowerShell -NoProfile -ExecutionPolicy Bypass -Command "Clear-DnsClientCache"
+    Run, PowerShell -NoProfile -ExecutionPolicy Bypass -File "%A_ScriptDir%\Scripts\flush-dns.ps1",, Hide
 return
 
 ViewLogs:
