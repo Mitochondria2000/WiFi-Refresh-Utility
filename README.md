@@ -4,12 +4,11 @@ WiFi Refresh Utility is a portable Windows helper for refreshing a wireless conn
 
 ## What is in this repository
 
-- [togglewifi.ahk](togglewifi.ahk) — tray-based launcher with menu items and hotkeys
+- [togglewifi.exe](togglewifi.exe) — prebuilt tray launcher with menu items and hotkeys
 - [scripts/wifi-refresh.ps1](scripts/wifi-refresh.ps1) — full refresh workflow for Wi-Fi and DNS
 - [scripts/flush-dns.ps1](scripts/flush-dns.ps1) — DNS-only cleanup action
 - [scripts/notification-enabled.ini](scripts/notification-enabled.ini) — persisted notification preference
 - [scripts/Telemetry](scripts/Telemetry) — runtime log folder created automatically
-- [togglewifi.exe](togglewifi.exe) — prebuilt launcher binary for convenience
 
 ## Features
 
@@ -18,7 +17,7 @@ WiFi Refresh Utility is a portable Windows helper for refreshing a wireless conn
 - Separate DNS-only workflow via its own PowerShell script
 - Notification toggle from the tray menu or the INI file
 - Automatic log creation for actions and failures in the Telemetry folder
-- Portable design: no installation step is required beyond AutoHotkey and PowerShell dependencies
+- Portable design: no installation step is required beyond PowerShell dependencies
 
 ## Requirements
 
@@ -29,10 +28,10 @@ WiFi Refresh Utility is a portable Windows helper for refreshing a wireless conn
 
 ## Quick start
 
-1. Install AutoHotkey v1.1 if it is not already available.
-2. Run [togglewifi.ahk](togglewifi.ahk) from Explorer or from the context menu.
-3. If prompted, allow PowerShell to install the BurntToast module.
-4. Use the tray menu or hotkeys to refresh the connection.
+1. Run [togglewifi.exe](togglewifi.exe) from Explorer.
+2. If prompted, allow PowerShell to install the BurntToast module.
+3. Use the tray menu or hotkeys to refresh the connection.
+
 
 ### Manual PowerShell usage
 
@@ -85,7 +84,7 @@ Get-Module -ListAvailable -Name BurntToast
 
 The repository is intentionally simple:
 
-1. [togglewifi.ahk](togglewifi.ahk) manages the tray menu, hotkeys, and notification toggle state.
+1. [togglewifi.exe](togglewifi.exe) provides the main tray experience for most users.
 2. [scripts/wifi-refresh.ps1](scripts/wifi-refresh.ps1) performs the network refresh workflow.
 3. [scripts/flush-dns.ps1](scripts/flush-dns.ps1) performs a DNS-only action for lighter troubleshooting.
 4. Both PowerShell scripts use BurntToast when available and log failures to the Telemetry folder.

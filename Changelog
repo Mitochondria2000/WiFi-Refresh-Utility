@@ -5,7 +5,7 @@ All notable changes to WiFi Refresh Utility are documented here.
 ## [1.0.0] - 2026-07-06
 
 ### Added
-- A portable AutoHotkey-based tray launcher with a dedicated refresh action and a DNS-only action
+- A portable tray launcher distributed as [togglewifi.exe](togglewifi.exe) with a dedicated refresh action and a DNS-only action
 - A separate [scripts/flush-dns.ps1](scripts/flush-dns.ps1) workflow for clearing the DNS cache without reconnecting Wi-Fi
 - A notification toggle that can be changed from the tray menu or persisted in [scripts/notification-enabled.ini](scripts/notification-enabled.ini)
 - Automatic telemetry logging to [scripts/Telemetry](scripts/Telemetry) for actions and failures
