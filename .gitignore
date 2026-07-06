@@ -8,7 +8,6 @@ wifi-toast-error.txt
 publish/
 bin/
 obj/
-*.exe
 *.dll
 *.pdb
 
