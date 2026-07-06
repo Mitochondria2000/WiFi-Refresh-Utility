@@ -26,12 +26,15 @@ WiFi Refresh Utility is a portable Windows helper for refreshing a wireless conn
 - Administrator privileges are recommended for the Wi-Fi and DNS operations
 - BurntToast is used for toast notifications and is installed automatically on first use when possible
 
-## Quick start
+## Installation Guide
 
-1. Run [WiFi Refresh Utility.exe](WiFi%20Refresh%20Utility.exe) from Explorer.
-2. If prompted, allow PowerShell to install the BurntToast module.
-3. Use the tray menu or hotkeys to refresh the connection.
+### Download from Releases
 
+1. Open the GitHub Releases page for this repository.
+2. Download the latest release package or executable.
+3. Extract the files if needed, then run [WiFi Refresh Utility.exe](WiFi%20Refresh%20Utility.exe) from Explorer.
+4. If prompted, allow PowerShell to install the BurntToast module.
+5. Use the tray menu or hotkeys to refresh the connection.
 
 ### Manual PowerShell usage
 
