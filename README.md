@@ -4,7 +4,7 @@ WiFi Refresh Utility is a portable Windows helper for refreshing a wireless conn
 
 ## What is in this repository
 
-- [togglewifi.exe](togglewifi.exe) — prebuilt tray launcher with menu items and hotkeys
+- [WiFi Refresh Utility.exe](WiFi%20Refresh%20Utility.exe) — prebuilt tray launcher with menu items and hotkeys
 - [scripts/wifi-refresh.ps1](scripts/wifi-refresh.ps1) — full refresh workflow for Wi-Fi and DNS
 - [scripts/flush-dns.ps1](scripts/flush-dns.ps1) — DNS-only cleanup action
 - [scripts/notification-enabled.ini](scripts/notification-enabled.ini) — persisted notification preference
@@ -28,7 +28,7 @@ WiFi Refresh Utility is a portable Windows helper for refreshing a wireless conn
 
 ## Quick start
 
-1. Run [togglewifi.exe](togglewifi.exe) from Explorer.
+1. Run [WiFi Refresh Utility.exe](WiFi%20Refresh%20Utility.exe) from Explorer.
 2. If prompted, allow PowerShell to install the BurntToast module.
 3. Use the tray menu or hotkeys to refresh the connection.
 
@@ -84,7 +84,7 @@ Get-Module -ListAvailable -Name BurntToast
 
 The repository is intentionally simple:
 
-1. [togglewifi.exe](togglewifi.exe) provides the main tray experience for most users.
+1. [WiFi Refresh Utility.exe](WiFi%20Refresh%20Utility.exe) provides the main tray experience for most users.
 2. [scripts/wifi-refresh.ps1](scripts/wifi-refresh.ps1) performs the network refresh workflow.
 3. [scripts/flush-dns.ps1](scripts/flush-dns.ps1) performs a DNS-only action for lighter troubleshooting.
 4. Both PowerShell scripts use BurntToast when available and log failures to the Telemetry folder.
