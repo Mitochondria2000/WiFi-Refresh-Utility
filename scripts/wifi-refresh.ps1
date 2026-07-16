@@ -90,6 +90,28 @@ function Show-Notification {
     }
 }
 
+function Wait-ForWifiConnection {
+    param(
+        [int]$TimeoutSeconds = 4
+    )
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    do {
+        $interfaceState = netsh wlan show interfaces 2>$null
+        $stateLine = $interfaceState | Select-String '^[\s]*State[\s]*:[\s]*(.+)$'
+        if ($stateLine) {
+            $state = ($stateLine.Matches[0].Groups[1].Value).Trim()
+            if ($state -eq 'connected') {
+                return $true
+            }
+        }
+
+        Start-Sleep -Milliseconds 250
+    } while ((Get-Date) -lt $deadline)
+
+    return $false
+}
+
 try {
     # Detect SSID
     $ssidLine = netsh wlan show interfaces | Select-String "^\s*SSID\s*:"
@@ -109,17 +131,22 @@ try {
 
     # Disconnect Wi-Fi
     netsh wlan disconnect | Out-Null
-    Start-Sleep -Seconds 2
 
     # Reconnect Wi-Fi
     netsh wlan connect name="$ssid" | Out-Null
-    Start-Sleep -Seconds 1
-
-    # Show notification
-    Show-Notification -Title "Wi-Fi Refreshed" -Message "Connected to $ssid at $time" -IconPath $wifiIcon
+    $connected = Wait-ForWifiConnection -TimeoutSeconds 4
 
     # Timestamp
     $time = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+
+    # Show notification
+    $notificationMessage = if ($connected) {
+        "Connected to $ssid at $time"
+    }
+    else {
+        "Reconnect requested for $ssid at $time"
+    }
+    Show-Notification -Title "Wi-Fi Refreshed" -Message $notificationMessage -IconPath $wifiIcon
 
     # Log success
     Add-Content -Path $logFile -Value "[$time] Wi-Fi cache cleared and reconnected to SSID: $ssid"
